@@ -174,6 +174,7 @@ function stop(message, serverQueue) {
         );
     serverQueue.songs = [];
     serverQueue.connection.dispatcher.end();
+    serverQueue = !serverQueue;
     return message.channel.send("すべての音楽がスキップされました、マスター")
 }
 
@@ -231,8 +232,6 @@ function pause(message, serverQueue) {
     if (serverQueue.connection.dispatcher.paused) return message.channel.send("音楽が止まらないよ");
 
     serverQueue.connection.dispatcher.pause();
-    
-    serverQueue = !serverQueue;
 
     message.channel.send(`Music Pause: ${serverQueue.songs[0].title}`);
 }
