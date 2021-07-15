@@ -69,10 +69,6 @@ client.on('message', async message => {
             send(message);
             break;
 
-        case `return`:
-            return(message, serverQueue);
-            break;
-
         default:
             message.channel.send("すみません、よく分りませんが");
     }
@@ -157,11 +153,15 @@ async function execute(message, serverQueue) {
 
 async function play(guild, song) {
     const serverQueue = queue.get(guild.id);
-    if (!song) {
-        serverQueue.voiceChannel.leave();
-        queue.delete(guild.id);
-        return;
-    }
+    setTimeout(() => {
+        if (!song) {
+            serverQueue.voiceChannel.leave();
+            queue.delete(guild.id);
+            return message.channel.send(
+                "お先に失礼します，ご主人様!!"
+            );
+        }
+    }, 300000);
 
     const dispatcher = serverQueue.connection
         .play(await ytdl(song.url), { type: 'opus' }) // ,bitrate: '192000'
@@ -181,6 +181,7 @@ function stop(message, serverQueue) {
         );
         serverQueue.songs = [];
         serverQueue.voiceChannel.leave();
+        //queue.delete(guild.id); //add in guild parameter if want to use this, currently using stop_place_holder to do the job
         stop_place_holder = true;
     return message.channel.send("すべての音楽がスキップされました、マスター")
 }
