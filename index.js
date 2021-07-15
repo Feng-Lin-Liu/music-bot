@@ -164,7 +164,7 @@ async function play(guild, song, message) {
             else {
                 clearTimeout(music_timeout);
             }
-            }, 10000);
+            }, 300000);
             return;
         }
 
