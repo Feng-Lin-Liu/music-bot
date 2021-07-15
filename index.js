@@ -3,11 +3,12 @@ const {
     prefix,
     token,
 } = require("./config.json");
-const ytdl = require("ytdl-core");
+const ytdl = require("ytdl-core-discord");
 
 const client = new Discord.Client();
 const queue = new Map();
 const yts = require('yt-search')
+var stop_place_holder = false;
 
 client.once('ready', () => {
     console.log('Okita?');
@@ -118,7 +119,8 @@ async function execute(message, serverQueue) {
         };
     }
 
-    if (!serverQueue) {
+    if (!serverQueue || stop_place_holder == true) {
+
         // Creating the contract for our queue
         const queueContruct = {
             textChannel: message.channel,
@@ -140,6 +142,7 @@ async function execute(message, serverQueue) {
             queueContruct.connection = connection;
             // Calling the play function to start a song
             play(message.guild, queueContruct.songs[0]);
+            stop_place_holder = false;
         } catch (err) {
             //Printing the error message if the bot fails to join the voicechat
             console.log(err);
@@ -152,7 +155,7 @@ async function execute(message, serverQueue) {
     }
 }
 
-function play(guild, song) {
+async function play(guild, song) {
     const serverQueue = queue.get(guild.id);
     if (!song) {
         serverQueue.voiceChannel.leave();
@@ -161,7 +164,7 @@ function play(guild, song) {
     }
 
     const dispatcher = serverQueue.connection
-        .play(ytdl(song.url), { bitrate: 192000 })
+        .play(await ytdl(song.url), { type: 'opus' }) // ,bitrate: '192000'
         .on("finish", () => {
             serverQueue.songs.shift();
             play(guild, serverQueue.songs[0]);
@@ -176,8 +179,9 @@ function stop(message, serverQueue) {
         return message.channel.send(
             "バカ, you have to be in a channel to stop the music!!"
         );
-    serverQueue.songs = [];
-    serverQueue.connection.dispatcher.end();
+        serverQueue.songs = [];
+        serverQueue.voiceChannel.leave();
+        stop_place_holder = true;
     return message.channel.send("すべての音楽がスキップされました、マスター")
 }
 
@@ -205,16 +209,12 @@ function remove(message, serverQueue) {
             for (const key_word of args) {
                 for (const song of serverQueue.songs) {
                     if((song.title.includes(key_word)) || song.title.toLowerCase().includes(key_word)) {
-                        console.log(song.title);
-                        console.log(key_word);
                         message.channel.send(`Music Removed: ${song.title}`);
                         found = true;
-                        console.log(index);
                         serverQueue.songs.splice(index,1);
                         break;
                     } else {
                         index++;
-                        console.log(index+'!!!');
                     }
                 } if(found) {
                     break;
