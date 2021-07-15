@@ -158,7 +158,7 @@ async function play(guild, song, message) {
                 message.channel.send("お先に失礼します，ご主人様!!");
                 serverQueue.voiceChannel.leave();
                 queue.delete(guild.id);
-            }, 10000);
+            }, 300000);
             return;
         }
 
