@@ -317,25 +317,3 @@ function getRandomInt(min, max) {
 }
 
 client.login(process.env.TOKEN);
-
-// client.on // changed to switch
-//     if(message.content.startsWith(`${prefix}play`)
-//         ||message.content.startsWith(`${prefix}p`)
-//             ||message.content.startsWith('...p')) {
-//         execute(message, serverQueue);
-//         return;
-//     } else if(message.content.startsWith(`${prefix}skip`)) {
-//         skip(message, serverQueue);
-//         return;
-//     } else if(message.content.startsWith(`${prefix}stop`)) {
-//         stop(message, serverQueue);
-//         return;
-//     } else if(message.content.startsWith(`${prefix}send`)
-//                 ||message.content.startsWith('^v^')) {
-//         send(message);
-//     } else {
-//         message.channel.send("すみません、よく分りませんが")
-//     }
-// });
-
-//Adding songs
