@@ -155,10 +155,10 @@ async function play(guild, song) {
     const serverQueue = queue.get(guild.id);
     setTimeout(() => {
         if (!song) {
+            message.channel.send("お先に失礼します，ご主人様!!");
             serverQueue.voiceChannel.leave();
             queue.delete(guild.id);
-            return message.channel.send(
-                "お先に失礼します，ご主人様!!"
+            return;
             );
         }
     }, 300000);
