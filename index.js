@@ -137,7 +137,7 @@ async function execute(message, serverQueue) {
             var connection = await voiceChannel.join();
             queueContruct.connection = connection;
             // Calling the play function to start a song
-            play(message.guild, queueContruct.songs[0]);
+            play(message.guild, queueContruct.songs[0], message);
             stop_place_holder = false;
         } catch (err) {
             //Printing the error message if the bot fails to join the voicechat
@@ -151,23 +151,22 @@ async function execute(message, serverQueue) {
     }
 }
 
-async function play(guild, song) {
+async function play(guild, song, message) {
     const serverQueue = queue.get(guild.id);
-    setTimeout(() => {
-        if (!song) {
-            message.channel.send("お先に失礼します，ご主人様!!");
-            serverQueue.voiceChannel.leave();
-            queue.delete(guild.id);
+    if (!song) {
+        setTimeout(function() {
+                message.channel.send("お先に失礼します，ご主人様!!");
+                serverQueue.voiceChannel.leave();
+                queue.delete(guild.id);
+            }, 10000);
             return;
-            );
         }
-    }, 300000);
 
     const dispatcher = serverQueue.connection
         .play(await ytdl(song.url), { type: 'opus' }) // ,bitrate: '192000'
         .on("finish", () => {
             serverQueue.songs.shift();
-            play(guild, serverQueue.songs[0]);
+            play(guild, serverQueue.songs[0],message);
         })
         .on("error", error => console.error(error));
     dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
