@@ -68,6 +68,10 @@ client.on('message', async message => {
             send(message);
             break;
 
+        case `return`:
+            return(message, serverQueue);
+            break;
+
         default:
             message.channel.send("すみません、よく分りませんが");
     }
@@ -157,7 +161,7 @@ function play(guild, song) {
     }
 
     const dispatcher = serverQueue.connection
-        .play(ytdl(song.url), { bitrate: 1000 })
+        .play(ytdl(song.url), { bitrate: 192000 })
         .on("finish", () => {
             serverQueue.songs.shift();
             play(guild, serverQueue.songs[0]);
@@ -174,7 +178,6 @@ function stop(message, serverQueue) {
         );
     serverQueue.songs = [];
     serverQueue.connection.dispatcher.end();
-    serverQueue = !serverQueue;
     return message.channel.send("すべての音楽がスキップされました、マスター")
 }
 
