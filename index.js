@@ -70,6 +70,10 @@ client.on('message', async message => {
         case `send`:
             send(message);
             break;
+            
+        case 'help':
+            help(message);
+            break;
 
         default:
             message.channel.send("すみません、よく分りませんが");
@@ -324,6 +328,22 @@ function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+}
+
+function help(message) {
+    message.channel.send(`ばか, これらはコマンドです \n
+                            \n
+                            .p or .play: Play song\n
+                            .s or .skip: Skip song\n
+                            .stop: Remove all songs from Queue and leave\n
+                            .pause: Pause song\n
+                            .resume: Resume Song\n
+                            .remove: Remove any song in Queue through keyword\n
+                            .send: MYSTERIOUS!!\n
+                            \n
+                            If any problem, try .stop\n
+                            If Fail, text FL or Ben for fix, ありがとう!`);
+                            
 }
 
 client.login(process.env.TOKEN);
