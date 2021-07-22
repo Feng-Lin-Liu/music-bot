@@ -311,12 +311,22 @@ function send(message) {
                 "./images/36.jpg",
                 "./images/37.jpg",
                 "./images/38.jpg",
+                "./images/39.jpg",
+                "./images/40.jpg",
+                "./images/41.jpg",
+                "./images/42.jpg",
+                "./images/43.jpg",
+                "./images/44.jpg",
                 "./images/100.png",
                 "./images/101.png",
                 "./images/102.png",
                 "./images/103.png",
                 "./images/104.png",
-                "./images/105.png"
+                "./images/105.png",
+                "./images/106.png",
+                "./images/107.png",
+                "./images/108.png",
+                "./images/109.png"
             );
             const attachment = new Discord.MessageAttachment(images[getRandomInt(0, images.length)]);
             message.channel.send(message.author, attachment);
