@@ -11,6 +11,7 @@ const client = new Discord.Client();
 const queue = new Map();
 const yts = require('yt-search')
 var stop_place_holder = false;
+var music_timeout;
 
 client.once('ready', () => {
     console.log('Okita?');
