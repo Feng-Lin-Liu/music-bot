@@ -162,7 +162,7 @@ async function play(guild, song, message) {
     if (!song) {
         stop_place_holder = true;
         music_timeout = setTimeout(function() {
-            if(stop_place_holder && message.guild.voiceConnection){
+            if(stop_place_holder && serverQueue.guild.voiceConnection){
                 message.channel.send("お先に失礼します，ご主人様!!");
                 serverQueue.voiceChannel.leave();
                 queue.delete(guild.id);
