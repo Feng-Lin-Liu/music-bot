@@ -91,7 +91,7 @@ async function execute(message, serverQueue) {
     const voiceChannel = message.member.voice.channel;
     if (!voiceChannel)
         return message.channel.send(
-            "Hmmm, I'm not in a voice channel!!"
+            "Hmmm, You're not in a voice channel, バカ!!"
         );
     const permissions = voiceChannel.permissionsFor(message.client.user);
     if (!permissions.has("CONNECT") || !permissions.has("SPEAK")) {
@@ -160,6 +160,7 @@ async function execute(message, serverQueue) {
 
 async function play(guild, song, message) {
     const serverQueue = queue.get(guild.id);
+    clearTimeout(music_timeout);
     if (!song) {
         stop_place_holder = true;
         music_timeout = setTimeout(function() {
