@@ -184,7 +184,7 @@ async function play(guild, song, message) {
         })
         .on("error", error => console.error(error));
     dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
-    serverQueue.textChannel.send(`Music playing: **${song.title}**`);
+    await serverQueue.textChannel.send(`Music playing: **${song.title}**`);
 }
 
 function stop(message, serverQueue) {
