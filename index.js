@@ -177,7 +177,7 @@ function play(guild, song, message) {
         }
 
     const dispatcher = serverQueue.connection
-        .play(ytdl(song.url, { type: 'opus', filter: 'audioonly'}) // ,bitrate: '192000'
+        .play(ytdl(song.url, { type: 'opus', filter: 'audioonly'})) // ,bitrate: '192000'
         .on("finish", () => {
             serverQueue.songs.shift();
             play(guild, serverQueue.songs[0],message);
