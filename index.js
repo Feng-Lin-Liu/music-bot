@@ -158,7 +158,7 @@ async function execute(message, serverQueue) {
     }
 }
 
-async function play(guild, song, message) {
+function play(guild, song, message) {
     const serverQueue = queue.get(guild.id);
     clearTimeout(music_timeout);
     if (!song) {
@@ -177,7 +177,7 @@ async function play(guild, song, message) {
         }
 
     const dispatcher = serverQueue.connection
-        .play(await ytdl(song.url), { type: 'opus', filter: 'audioonly', highWaterMark: 1<<25}) // ,bitrate: '192000'
+        .play(ytdl(song.url, { type: 'opus', filter: 'audioonly'}) // ,bitrate: '192000'
         .on("finish", () => {
             serverQueue.songs.shift();
             play(guild, serverQueue.songs[0],message);
