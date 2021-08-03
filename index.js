@@ -177,14 +177,14 @@ async function play(guild, song, message) {
         }
 
     const dispatcher = serverQueue.connection
-        .play(ytdl(song.url), { type: 'opus', filter: 'audioonly' }) // ,bitrate: '192000'
+        .play(await ytdl(song.url), { type: 'opus', filter: 'audioonly', highWaterMark: 1<<25}) // ,bitrate: '192000'
         .on("finish", () => {
             serverQueue.songs.shift();
             play(guild, serverQueue.songs[0],message);
         })
         .on("error", error => console.error(error));
     dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
-    await serverQueue.textChannel.send(`Music playing: **${song.title}**`);
+    serverQueue.textChannel.send(`Music playing: **${song.title}**`);
 }
 
 function stop(message, serverQueue) {
