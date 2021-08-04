@@ -177,7 +177,7 @@ async function play(guild, song, message) {
         }
 
     const dispatcher = serverQueue.connection
-        .play(await ytdl(song.url), { type: 'opus', filter: 'audioonly'}) // ,bitrate: '192000', highWaterMark: 1<<25, highWaterMark: 1
+        .play(await ytdl(song.url), { type: 'opus', filter: 'audioonly', highWaterMark: 1<<25}) // ,bitrate: '192000', , highWaterMark: 1
         .on("finish", () => {
             serverQueue.songs.shift();
             play(guild, serverQueue.songs[0],message);
