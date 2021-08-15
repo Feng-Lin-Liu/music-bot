@@ -296,10 +296,10 @@ async function lyric(message, serverQueue) {
         }
 
         if(lyrics.length >=2000) {
-            lyrics.first = lyrics.slice(0,1999);
-            lyrics.second = lyrics.slice(2000);
-            message.channel.send(lyrics.first);
-            message.channel.send(lyrics.second);
+            lyrics_first = lyrics.slice(0,2000);
+            lyrics_second = lyrics.slice(2000);
+            message.channel.send(lyrics_first);
+            message.channel.send(lyrics_second);
         } else {
             message.channel.send(lyrics);
         }
