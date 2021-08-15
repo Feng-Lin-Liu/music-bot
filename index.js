@@ -9,7 +9,9 @@ const ytdl = require("ytdl-core-discord");
 
 const client = new Discord.Client();
 const queue = new Map();
-const yts = require('yt-search')
+const yts = require('yt-search');
+const lyricsFinder = require('lyrics-finder');
+
 var stop_place_holder = false;
 var music_timeout;
 
@@ -66,6 +68,10 @@ client.on('message', async message => {
 
         case 'remove':
             remove(message, serverQueue);
+            break;
+
+        case 'lyric':
+            lyric(message, serverQueue);
             break;
 
         case `send`:
@@ -177,7 +183,7 @@ async function play(guild, song, message) {
         }
 
     const dispatcher = serverQueue.connection
-        .play(await ytdl(song.url), { type: 'opus', filter: 'audioonly'}) // ,bitrate: '192000', highWaterMark: 1<<25, highWaterMark: 1
+        .play(await ytdl(song.url), { type: 'opus'}) // ,bitrate: '192000', filter: 'audioonly', highWaterMark: 1<<25 , highWaterMark: 1
         .on("finish", () => {
             serverQueue.songs.shift();
             play(guild, serverQueue.songs[0],message);
@@ -268,6 +274,16 @@ function resume(message, serverQueue) {
     serverQueue.connection.dispatcher.resume();     //!!!!
 
     message.channel.send(`Music Resume: ${serverQueue.songs[0].title}`);
+}
+
+async function lyric(message, serverQueue) {
+
+        let lyrics = await lyricsFinder(serverQueue.songs[0].title,"");
+        if(!lyrics) {
+            lyrics = `No lyrics found for ${serverQueue.songs[0].title}!!`
+        }
+
+        message.channel.send(lyrics);
 }
 
 function send(message) {
