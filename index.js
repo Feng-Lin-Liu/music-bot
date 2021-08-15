@@ -294,10 +294,15 @@ async function lyric(message, serverQueue) {
         catch {
             lyrics = `No lyrics found for ${serverQueue.songs[0].title}.`;
         }
+
         if(lyrics.length >=2000) {
-            lyrics = lyrics.slice(0,1999);
+            lyrics.first = lyrics.slice(0,1999);
+            lyrics.second = lyrics.slice(2000);
+            message.channel.send(lyrics.first);
+            message.channel.send(lyrics.second);
+        } else {
+            message.channel.send(lyrics);
         }
-        message.channel.send(lyrics);
 }
 
 function send(message) {
