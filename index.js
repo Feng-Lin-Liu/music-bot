@@ -277,12 +277,26 @@ function resume(message, serverQueue) {
 }
 
 async function lyric(message, serverQueue) {
-
-        let lyrics = await lyricsFinder(serverQueue.songs[0].title,"");
-        if(!lyrics) {
-            lyrics = `No lyrics found for ${serverQueue.songs[0].title}!!`
+        let lyrics = null;
+        let arg = message.content.substring(prefix.length);
+        try {
+            lyrics = await lyricsFinder("",serverQueue.songs[0].title);
+            console.log(lyrics);
+            if(!lyrics) {
+                lyrics = await lyricsFinder("",arg);
+                console.log(lyrics);
+                if(!lyrics) {
+                lyrics = `No lyrics found for ${serverQueue.songs[0].title}.`;
+                }
+            }
         }
-
+        
+        catch {
+            lyrics = `No lyrics found for ${serverQueue.songs[0].title}.`;
+        }
+        if(lyrics.length >=2000) {
+            lyrics = lyrics.slice(0,1999);
+        }
         message.channel.send(lyrics);
 }
 
