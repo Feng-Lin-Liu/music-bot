@@ -1,11 +1,11 @@
-//Current problems:
+//Current problems: In .lyric, when serverQueue empty it won't return. Fix: Need to use same format as .gif
 
 const Discord = require("discord.js");
 const {
     prefix,
-    token,
 } = require("./config.json");
 const ytdl = require("ytdl-core-discord");
+const fetch = require("node-fetch");
 
 const client = new Discord.Client();
 const queue = new Map();
@@ -76,6 +76,10 @@ client.on('message', async message => {
 
         case `send`:
             send(message);
+            break;
+
+        case 'gif':
+            gif(message);
             break;
             
         case 'help':
@@ -278,13 +282,12 @@ function resume(message, serverQueue) {
 
 async function lyric(message, serverQueue) {
         let lyrics = null;
-        let arg = message.content.substring(prefix.length);
+        let arg = message.content.substring(prefix.length+6);
+        console.log(arg);
         try {
             lyrics = await lyricsFinder("",serverQueue.songs[0].title);
-            console.log(lyrics);
             if(!lyrics) {
                 lyrics = await lyricsFinder("",arg);
-                console.log(lyrics);
                 if(!lyrics) {
                 lyrics = `No lyrics found for ${serverQueue.songs[0].title}.`;
                 }
@@ -370,6 +373,22 @@ function send(message) {
             message.channel.send(message.author, attachment);
             break;
     }
+}
+
+async function gif(message) {
+    let args = message.content.split(" ");
+
+    let keywords = 'bongo cat';
+    if(args.length > 1) {
+        keywords = args.slice(1, args.length).join(" ");
+    }
+
+    let url = `https://g.tenor.com/v1/search?q=${keywords}&key=${process.env.GIF_TOKEN}`
+    let response = await fetch(url);
+    let json = await response.json();
+    let index = Math.floor(Math.random() * json.results.length);
+    
+    message.channel.send(json.results[index].url);
 }
 
 function getRandomInt(min, max) {
