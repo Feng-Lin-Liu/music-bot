@@ -377,7 +377,6 @@ function send(message) {
 
 async function gif(message) {
     let args = message.content.split(" ");
-
     let keywords = 'bongo cat';
     if(args.length > 1) {
         keywords = args.slice(1, args.length).join(" ");
